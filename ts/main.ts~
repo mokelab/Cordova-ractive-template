@@ -1,0 +1,4 @@
+
+(() => {
+    document.addEventListener('deviceready', this.onDeviceReady.bind(this), false);
+})();
