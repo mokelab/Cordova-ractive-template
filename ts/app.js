@@ -7,6 +7,28 @@ class TopPage {
     }
     onCreate() {
         this.app.fetchPage('top.html').then((t) => {
+            let options = {
+                el: '#container',
+                template: t,
+                showSecond: () => {
+                    this.app.showPage('second');
+                }
+            };
+            this.ractive = new Ractive(options);
+        }).catch((e) => {
+            console.log('Unexpected error ' + e);
+        });
+    }
+}
+/// <reference path="../Application.ts"/>
+/// <reference path="../Page.ts"/>
+/// <reference path="../ractive.d.ts"/>
+class SecondPage {
+    constructor(app) {
+        this.app = app;
+    }
+    onCreate() {
+        this.app.fetchPage('second.html').then((t) => {
             this.ractive = new Ractive({
                 el: '#container',
                 template: t,
@@ -16,7 +38,8 @@ class TopPage {
         });
     }
 }
-/// <reference path="./TopPage.ts"/> 
+/// <reference path="./TopPage.ts"/>
+/// <reference path="./SecondPage.ts"/> 
 /// <reference path="./Application.ts"/>
 /// <reference path="./Page.ts"/>
 /// <reference path="./pages/Pages.ts"/>
@@ -25,20 +48,26 @@ class Router {
         let MyRouter = Backbone.Router.extend({
             routes: {
                 "": "top",
+                "second": "second",
             },
             top: function () {
                 this.showPage(new TopPage(app));
             },
+            second: function () {
+                this.showPage(new SecondPage(app));
+            },
             showPage: (p) => {
                 this.page = p;
                 this.page.onCreate();
-                console.log('showPage');
             }
         });
         this.router = new MyRouter();
     }
     start() {
         Backbone.history.start();
+    }
+    show(path) {
+        this.router.navigate(path, { trigger: true });
     }
 }
 var Method;
@@ -169,6 +198,9 @@ class Application {
         return req.send(Method.GET, url, {}, null)
             .then(Func.isStatus200)
             .then(Func.getBody);
+    }
+    showPage(path) {
+        this.router.show(path);
     }
 }
 /// <reference path="./Application.ts"/>

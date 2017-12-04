@@ -12,14 +12,17 @@ class Router {
         let MyRouter = Backbone.Router.extend({
             routes : {
                 "" : "top",
+                "second" : "second",
             },
             top : function(){
                 this.showPage(new TopPage(app));
             },
+            second : function(){
+                this.showPage(new SecondPage(app));
+            },            
             showPage : (p : Page) => {
                 this.page = p;
                 this.page.onCreate();
-                console.log('showPage');
             }
         });
 
@@ -28,5 +31,9 @@ class Router {
 
     start() {
         Backbone.history.start();
+    }
+
+    show(path : string) {
+        this.router.navigate(path, {trigger:true});
     }
 }

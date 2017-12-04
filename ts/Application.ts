@@ -18,4 +18,8 @@ class Application {
             .then(Func.isStatus200)
             .then(Func.getBody)
     }
+
+    showPage(path : string) {
+        this.router.show(path);
+    }
 }

@@ -2,7 +2,7 @@
 /// <reference path="../Page.ts"/>
 /// <reference path="../ractive.d.ts"/>
 
-class TopPage implements Page {
+class SecondPage implements Page {
     app : Application;
     ractive : Ractive.Ractive;
 
@@ -11,15 +11,11 @@ class TopPage implements Page {
     }
 
     onCreate() {
-        this.app.fetchPage('top.html').then((t : any) => {
-            let options = {
+        this.app.fetchPage('second.html').then((t : any) => {
+            this.ractive = new Ractive({
                 el : '#container',
                 template : t,
-                showSecond : () => {
-                    this.app.showPage('second');
-                }
-            }
-            this.ractive = new Ractive(options);
+            });
         }).catch((e : any) => {
             console.log('Unexpected error ' + e);
         });
